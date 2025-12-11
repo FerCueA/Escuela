@@ -94,3 +94,4 @@ Ve a: [http://localhost:8080](http://localhost:8080)
 Este es un proyecto de **aprendizaje**, no está pensado para producción. Hay muchas cosas que se podrían mejorar (validaciones, seguridad, manejo de errores, etc.) pero el objetivo principal es **entender los conceptos básicos**.
 
 
+# Escuela
