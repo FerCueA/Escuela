@@ -66,14 +66,14 @@ public class MainController {
     }
 
 
-    // Método 1: Mostrar el formulario (cuando haces clic en "Agregar Asignatura")
+    // CRGAR VISTA DE AGREGAR ASIGNATURA
     @GetMapping("/nav/asignaturas/agregar")
     public String mostrarFormularioAgregar() {
         // Retorna la vista del formulario
         return "nav/agregar-asignatura";
     }
 
-    // Método 2: Procesar el formulario y guardar en la BD (cuando haces Submit)
+    // AGREGAR ASINGATURA
     @PostMapping("/nav/asignaturas/guardar")
     public String guardarAsignatura(@RequestParam("nombre") String nombre, 
                                     @RequestParam("descripcion") String descripcion) {
@@ -84,10 +84,11 @@ public class MainController {
         // 2. Llamar al método insertAsignatura
         dao.insertAsignatura(nombre, descripcion);
         
-        // 3. Redireccionar a la lista de asignaturas (vuelves a /nav/asignaturas)
+        // 3. Redireccionar a la lista de asignaturas
         return "redirect:/nav/asignaturas";
     }
 
+    // ELIMINAR ASIGNATURA
     @GetMapping("/nav/asignaturas/eliminar")
     public String eliminarAsignatura(@RequestParam("id") Long id) {
         
@@ -96,6 +97,39 @@ public class MainController {
         
         // 2. Llamar al método deleteAsignatura
         dao.deleteAsignatura(id);
+        
+        // 3. Redireccionar a la lista de asignaturas
+        return "redirect:/nav/asignaturas";
+    }
+
+    // CARGAR VISTAS DE LA ASINGATURA A EDITAR 
+    @GetMapping("/nav/asignaturas/editar")
+    public String mostrarFormularioEditar(@RequestParam("id") Long id, Model model) {
+        
+        // 1. Crear instancia del DAO
+        asignaturasDAO dao = new asignaturasDAO();
+        
+        // 2. Obtener la asignatura por ID
+        Asignatura asignatura = dao.getAsignaturaById(id);
+        
+        // 3. Pasar la asignatura a la vista
+        model.addAttribute("asignatura", asignatura);
+        
+        // 4. Retornar la vista de editar
+        return "nav/editar-asignatura";
+    }
+
+    // ACTUALZIAR LOS DATOS EN LA BASE DE DATOS
+    @PostMapping("/nav/asignaturas/actualizar")
+    public String actualizarAsignatura(@RequestParam("id") Long id,
+                                       @RequestParam("nombre") String nombre,
+                                       @RequestParam("descripcion") String descripcion) {
+        
+        // 1. Crear instancia del DAO
+        asignaturasDAO dao = new asignaturasDAO();
+        
+        // 2. Llamar al método updateAsignatura
+        dao.updateAsignatura(id, nombre, descripcion);
         
         // 3. Redireccionar a la lista de asignaturas
         return "redirect:/nav/asignaturas";

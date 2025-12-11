@@ -17,10 +17,7 @@ public class asignaturasDAO {
         objConexion = new MySqlConnection();
     }
 
-    /**
-     * Método para obtener TODAS las asignaturas de la base de datos
-     * @return List<Asignatura> - Lista con todas las asignaturas
-     */
+    /// MONSTAR TODAS LAS ASINGATURAS
     public List<Asignatura> getAllAsignaturas() {
 
         // PASO 1: Crear una lista vacía donde guardaremos las asignaturas
@@ -69,6 +66,8 @@ public class asignaturasDAO {
         return listaAsignaturas;
     }
 
+
+    // INSERT ASINGATUARAS
     public boolean insertAsignatura(String nombre, String descripcion) {
     
         // PASO 1: Abrir la conexión
@@ -103,6 +102,8 @@ public class asignaturasDAO {
         return false;
     }
 
+    //ELIMNAR UNA ASINATURA POR ID
+
     public boolean deleteAsignatura(Long id) {
         
         // PASO 1: Abrir la conexión
@@ -119,6 +120,77 @@ public class asignaturasDAO {
                 int filasAfectadas = objConexion.executeUpdateOrDelete(sql);
                 
                 // PASO 5: Si se eliminó al menos una fila, retornar true
+                if (filasAfectadas > 0) {
+                    return true;
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // PASO 6: Cerrar la conexión
+                objConexion.close();
+            }
+        }
+        
+        return false;
+    }
+
+    // OBTENER ASIGNATURA POR ID
+    public Asignatura getAsignaturaById(Long id) {
+        
+        Asignatura asignatura = null;
+        
+        // PASO 1: Abrir la conexión
+        objConexion.open();
+        
+        // PASO 2: Verificar que no hay error
+        if (!objConexion.isError()) {
+            
+            // PASO 3: Escribir la consulta SQL SELECT con WHERE
+            String sql = "SELECT id, nombre, descripcion FROM asignaturas WHERE id = " + id;
+            
+            // PASO 4: Ejecutar la consulta
+            ResultSet objResulset = objConexion.executeSelect(sql);
+            
+            try {
+                // PASO 5: Si encontramos el registro
+                if (objResulset.next()) {
+                    
+                    // PASO 5.1: Crear el objeto Asignatura
+                    asignatura = new Asignatura();
+                    asignatura.setId(objResulset.getLong("id"));
+                    asignatura.setNombre(objResulset.getString("nombre"));
+                    asignatura.setDescripcion(objResulset.getString("descripcion"));
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // PASO 6: Cerrar la conexión
+                objConexion.close();
+            }
+        }
+        
+        return asignatura;
+    }
+
+    // ACTUALIZAR ASIGNATURA, PASNADOLE LOS 3 VALORES 
+    public boolean updateAsignatura(Long id, String nombre, String descripcion) {
+        
+        // PASO 1: Abrir la conexión
+        objConexion.open();
+        
+        // PASO 2: Verificar que no hay error
+        if (!objConexion.isError()) {
+            
+            // PASO 3: Escribir la consulta SQL UPDATE
+            String sql = "UPDATE asignaturas SET nombre = '" + nombre + "', descripcion = '" + descripcion + "' WHERE id = " + id;
+            
+            try {
+                // PASO 4: Ejecutar el UPDATE
+                int filasAfectadas = objConexion.executeUpdateOrDelete(sql);
+                
+                // PASO 5: Si se actualizó al menos una fila, retornar true
                 if (filasAfectadas > 0) {
                     return true;
                 }
