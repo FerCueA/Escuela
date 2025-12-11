@@ -84,7 +84,7 @@ Ve a: [http://localhost:8080](http://localhost:8080)
 -  Ver lista de notas (con JOIN para mostrar nombres)
 -  Agregar nueva asignatura
 -  Eliminar asignatura
--  Modificar asignatura (pendiente)
+-  Modificar asignatura 
 -  CRUD completo para alumnos (pendiente)
 -  CRUD completo para notas (pendiente)
 
